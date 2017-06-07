@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use niklasravnsborg\LaravelPdf\Facades\Pdf;
+use PulkitJalan\GeoIP\GeoIP;
 
 class RegisterController extends Controller
 {
-    public function __construct()
+    public $geoIp;
+
+    public function __construct(GeoIP $geoIP)
     {
         $this->middleware('user');
+        $this->geoIp = $geoIP;
     }
 
     /**
@@ -19,7 +23,6 @@ class RegisterController extends Controller
      */
     public function index(Request $request)
     {
-
         $cpf = trim($request->session()->get('cpf'));
         $funcionario = DB::table('svcolaborador')
             ->join('coempresa', 'svcolaborador.CDCASA', '=', 'coempresa.CODIGO')
@@ -85,8 +88,14 @@ class RegisterController extends Controller
         return redirect()->route('register.home');
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function generatePdf($id)
     {
+        $this->geoIp->setIp(session()->get('ip'));
+
         $funcionario = DB::table('svcolaborador')
             ->join('coempresa','svcolaborador.CDCASA','=','coempresa.CODIGO')
             ->where('svcolaborador.CODIGO', $id)
@@ -109,10 +118,10 @@ class RegisterController extends Controller
             'cpf' => $funcionario->CPF,
             'casa' => $funcionario->RAZAO,
             'folha' => $funcionario->FOLHA,
+            'cidade' => $this->geoIp->getCity(),
             'dependentes' => $dependente
         ];
 
-        //dd($data);
         $pdf = Pdf::loadView('termo',$data);
         return $pdf->stream('termo.pdf');
     }

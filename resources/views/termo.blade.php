@@ -31,20 +31,6 @@
                 </div>
             </div>
             <div class="row space-top">
-                <div class="col-xs-12 text-justify">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitae lacinia ante, scelerisque
-                    consequat turpis.
-                    Fusce rhoncus risus vitae justo placerat, ut consectetur est congue. Mauris vitae sapien vitae mi
-                    placerat
-                    feugiat. Maecenas porta sit amet ipsum vitae hendrerit. Donec mollis vestibulum dignissim.
-                    Vestibulum et quam
-                    vitae dui volutpat fermentum at eu magna. Donec quis nisl ut libero ornare dapibus sit amet ut dui.
-                    Praesent
-                    in eleifend purus. Donec commodo lectus eget eros gravida tincidunt.
-                    <br>
-                </div>
-            </div>
-            <div class="row space-top">
                 <div class="col-xs-12">
                     <div class="form-group">
                         <span class="text-bold">Colaborador:</span><br>
@@ -72,6 +58,16 @@
                             {{ $dependente->nome }}<br>
                         @endforeach
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 text-bold">
+                    Autorizo descontar em folha de pagamento o valor total referente a inclusão de meu(s) dependente(s) na campanha de vacinação antigripal.
+                </div>
+            </div>
+            <div class="row space-top">
+                <div class="col-xs-12">
+                    {{ $cidade }}, {{ \Carbon\Carbon::now()->formatLocalized('%d de %b de %Y') }}
                 </div>
             </div>
             <div class="row space-top">
