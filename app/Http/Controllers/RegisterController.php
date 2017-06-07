@@ -32,7 +32,8 @@ class RegisterController extends Controller
                 'svcolaborador.NOME',
                 'svcolaborador.CPF',
                 'coempresa.RAZAO',
-                'svcolaborador.FOLHA'
+                'svcolaborador.FOLHA',
+                'svcolaborador.CDFILIAL'
             )
             ->get()->first();
 
@@ -42,7 +43,12 @@ class RegisterController extends Controller
             ->select('CODIGO','NOME','IDADE')
             ->get();
 
-        return view('home', compact('funcionario','dependentes'));
+        $unidades = DB::table('filial')
+            ->where('STATUS','A')
+            ->select('CODIGO as cod','NMFILIAL as filial')
+            ->get();
+
+        return view('home', compact('funcionario','dependentes','unidades'));
     }
 
     /**
@@ -52,7 +58,12 @@ class RegisterController extends Controller
      */
     public function postAtualiza($id, Request $request)
     {
-        DB::table('svcolaborador')->where('CODIGO', $id)->update(['FOLHA' => $request->get('folha')]);
+        DB::table('svcolaborador')
+            ->where('CODIGO', $id)
+            ->update([
+                'FOLHA' => $request->get('folha'),
+                'CDFILIAL' => $request->get('unidade')
+                ]);
 
         return redirect()->route('register.home');
     }

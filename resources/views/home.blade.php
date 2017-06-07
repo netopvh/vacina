@@ -9,7 +9,8 @@
                     <div class="col-xs-4">
                         <a href="{{ route('register.logout') }}" type="submit" class="btn btn-primary">Sair do
                             Sistema</a>
-                        <a href="{{ route('register.termo',['id' => $funcionario->CODIGO]) }}" class="btn btn-primary">Imprimir Termo</a>
+                        <a href="{{ route('register.termo',['id' => $funcionario->CODIGO]) }}" class="btn btn-primary">Imprimir
+                            Termo</a>
                     </div>
                 </div>
             </fieldset>
@@ -48,14 +49,14 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-xs-4">
+                                    <div class="col-xs-3">
                                         <div class="form-group">
                                             <label>CPF:</label>
                                             <input type="text" class="form-control" value="{{ $funcionario->CPF }}"
                                                    disabled>
                                         </div>
                                     </div>
-                                    <div class="col-xs-6">
+                                    <div class="col-xs-3">
                                         <label>Descontar em Folha:</label>
                                         <div class="form-group" style="margin-top: 10px">
                                             <label class="radio-inline">
@@ -66,6 +67,17 @@
                                                 <input type="radio" name="folha"
                                                        value="N"{{ $funcionario->FOLHA=='N'? ' checked' : '' }}> Não
                                             </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                            <label>Local de Aplicação:</label>
+                                            <select name="unidade" class="form-control">
+                                                <option value="">Selecione</option>
+                                                @foreach($unidades as $unidade)
+                                                    <option value="{{ $unidade->cod }}"{{ $funcionario->CDFILIAL==$unidade->cod?' selected':'' }}>{{ $unidade->filial }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -136,7 +148,8 @@
                                         <td>{{ $dependente->NOME }}</td>
                                         <td>{{ $dependente->IDADE }}</td>
                                         <td>
-                                            <form action="{{ route('register.delete', ['id' => $dependente->CODIGO]) }}" method="post">
+                                            <form action="{{ route('register.delete', ['id' => $dependente->CODIGO]) }}"
+                                                  method="post">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
                                                 <button class="btn btn-danger"><i class="fa fa-remove"></i></button>
