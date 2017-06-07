@@ -1,0 +1,21 @@
+{
+  "name": "vacina",
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/components/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.7",
+    "inputmask": "~3.3.6",
+    "jquery-form-validator": "~2.3.64",
+    "font-awesome": "~4.7.0"
+  }
+}
