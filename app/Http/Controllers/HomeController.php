@@ -26,9 +26,17 @@ class HomeController extends Controller
     public function postUser(Request $request)
     {
 
-        session()->put('cpf',$request->cpf);
+        $colaborador = DB::table('svcolaborador')
+            ->where('CPF',$request->cpf)
+            ->get();
 
-        return redirect()->route('register.home');
+        if (count($colaborador) < 1){
+            $request->session()->flash('error', 'Colaborador não localizado');
+            return redirect()->route('index');
+        }else{
+            session()->put('cpf',$request->cpf);
+            return redirect()->route('register.home');
+        }
     }
 
 }

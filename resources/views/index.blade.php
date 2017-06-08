@@ -10,6 +10,9 @@
             {{ csrf_field() }}
             <div class="row">
                 <div class="col-xs-3">
+                    @if(Session::has('error'))
+                        <div class="alert alert-danger">{{ Session::get('error') }}</div>
+                    @endif
                     <div class="form-group">
                         <label><b>CPF do Colaborador:</b></label>
                         <input type="text" data-validation="cpf" name="cpf" id="cpf" class="form-control" required>
