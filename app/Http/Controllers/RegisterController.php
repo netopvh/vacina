@@ -61,9 +61,12 @@ class RegisterController extends Controller
         DB::table('svcolaborador')
             ->where('CODIGO', $id)
             ->update([
-                'FOLHA' => $request->get('folha'),
-                'CDFILIAL' => $request->get('unidade')
+                'FOLHA' => $request->folha,
+                'CDFILIAL' => $request->unidade,
                 ]);
+
+        //insere a unidade na sessão
+        $this->sessionUnidade('unidade',$request->unidade);
 
         return redirect()->route('register.home');
     }
@@ -75,14 +78,31 @@ class RegisterController extends Controller
     public function postDependente(Request $request)
     {
 
+        if (!$this->getColabAtualizado($request->codigo)){
+            $request->session()->flash('error', 'Atenção! É obrigatório atualizar informações do colaborador!');
+            return redirect()->route('register.home');
+        }
+
         if ($request->idade < 12){
             $request->session()->flash('error', 'Atenção! Permitido apenas para maiores de 12 anos!');
         }else{
-            DB::table('svdependente')->insert([
-                'NOME' => $request->nome,
-                'IDADE' => $request->idade,
-                'COLABORADOR' => $request->codigo
-            ]);
+            $colab = DB::table('svcolaborador')
+                ->select(DB::raw("(case when count(svcolaborador.CODIGO) >= svmeta.QTTRI then 'S' else 'N' end) as meta"))
+                ->join('svmeta','svmeta.CDUNIDADE','=','svcolaborador.CDFILIAL')
+                ->where('svcolaborador.CDFILIAL',session('unidade'))
+                ->groupBy('svmeta.QTTRI')
+                ->get()->first();
+
+            if ($colab->meta == 'S'){
+                $request->session()->flash('error', 'Atenção! Meta de Vacina atingida');
+                return redirect()->route('register.home');
+            }else{
+                DB::table('svdependente')->insert([
+                    'NOME' => $request->nome,
+                    'IDADE' => $request->idade,
+                    'COLABORADOR' => $request->codigo
+                ]);
+            }
         }
 
         return redirect()->route('register.home');
@@ -105,7 +125,7 @@ class RegisterController extends Controller
      */
     public function generatePdf($id)
     {
-        $this->geoIp->setIp(session()->get('ip'));
+        //$this->geoIp->setIp(session()->get('ip'));
 
         $funcionario = DB::table('svcolaborador')
             ->join('coempresa','svcolaborador.CDCASA','=','coempresa.CODIGO')
@@ -147,5 +167,26 @@ class RegisterController extends Controller
         $request->session()->flush();
 
         return redirect()->route('index');
+    }
+
+    public function getColabAtualizado($id)
+    {
+        $colab = DB::table('svcolaborador')
+            ->where('CODIGO',$id)
+            ->get()->first();
+        if (is_null($colab->FOLHA) && is_null($colab->CDFILIAL)){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public function sessionUnidade($sessao, $value)
+    {
+        if (!session($sessao)){
+            session()->put($sessao,$value);
+        }else{
+            session($sessao);
+        }
     }
 }

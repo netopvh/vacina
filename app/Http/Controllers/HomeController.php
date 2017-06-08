@@ -27,7 +27,6 @@ class HomeController extends Controller
     {
 
         $request->session()->put('cpf',$request->cpf);
-        $request->session()->put('ip',$this->getIpFull());
 
         return redirect()->route('register.home');
     }
