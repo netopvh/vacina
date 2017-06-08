@@ -26,17 +26,9 @@ class HomeController extends Controller
     public function postUser(Request $request)
     {
 
-        $request->session()->put('cpf',$request->cpf);
+        session()->put('cpf',$request->cpf);
 
         return redirect()->route('register.home');
-    }
-
-    public function getIpFull()
-    {
-        $externalContent = file_get_contents('http://checkip.dyndns.com/');
-        preg_match('/Current IP Address: \[?([:.0-9a-fA-F]+)\]?/', $externalContent, $m);
-        $externalIp = $m[1];
-        return $externalIp;
     }
 
 }

@@ -48,6 +48,8 @@ class RegisterController extends Controller
             ->select('CODIGO as cod','NMFILIAL as filial')
             ->get();
 
+        $this->sessionUnidade('unidade',$funcionario->CDFILIAL);
+
         return view('home', compact('funcionario','dependentes','unidades'));
     }
 
@@ -58,15 +60,15 @@ class RegisterController extends Controller
      */
     public function postAtualiza($id, Request $request)
     {
+        //insere a unidade na sessão
+        $this->sessionUnidade('unidade',$request->unidade);
+
         DB::table('svcolaborador')
             ->where('CODIGO', $id)
             ->update([
                 'FOLHA' => $request->folha,
                 'CDFILIAL' => $request->unidade,
                 ]);
-
-        //insere a unidade na sessão
-        $this->sessionUnidade('unidade',$request->unidade);
 
         return redirect()->route('register.home');
     }
@@ -170,6 +172,8 @@ class RegisterController extends Controller
     {
         $request->session()->forget('cpf');
         $request->session()->flush();
+        $request->session()->forget('unidade');
+        $request->session()->flush();
 
         return redirect()->route('index');
     }
@@ -191,7 +195,8 @@ class RegisterController extends Controller
         if (!session($sessao)){
             session()->put($sessao,$value);
         }else{
-            session($sessao);
+            session()->forget($sessao);
+            session()->put($sessao, $value);
         }
     }
 }
