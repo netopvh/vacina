@@ -78,7 +78,7 @@ class RegisterController extends Controller
     public function postDependente(Request $request)
     {
 
-        if (!$this->getColabAtualizado($request->codigo)){
+        if (!$this->getColabAtualizado(session('cpf'))){
             $request->session()->flash('error', 'Atenção! É obrigatório atualizar informações do colaborador!');
             return redirect()->route('register.home');
         }
@@ -125,7 +125,12 @@ class RegisterController extends Controller
      */
     public function generatePdf($id)
     {
-        //$this->geoIp->setIp(session()->get('ip'));
+
+        if (!$this->getColabAtualizado(session('cpf'))){
+            session()->flash('error', 'Atenção! É obrigatório atualizar informações do colaborador!');
+            return redirect()->route('register.home');
+        }
+
 
         $funcionario = DB::table('svcolaborador')
             ->join('coempresa','svcolaborador.CDCASA','=','coempresa.CODIGO')
@@ -172,7 +177,7 @@ class RegisterController extends Controller
     public function getColabAtualizado($id)
     {
         $colab = DB::table('svcolaborador')
-            ->where('CODIGO',$id)
+            ->where('CPF',$id)
             ->get()->first();
         if (is_null($colab->FOLHA) && is_null($colab->CDFILIAL)){
             return false;
