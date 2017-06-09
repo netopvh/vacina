@@ -154,7 +154,7 @@ class RegisterController extends Controller
             ->select('NOME as nome', 'IDADE as idade')
             ->get()->toArray();
 
-        if (count($dependente)){
+        if (count($dependente) < 1){
             session()->flash('error', 'Atenção! É obrigatório cadastrar ao menos um dependente');
             return redirect()->route('register.home');
         }
