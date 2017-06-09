@@ -1,6 +1,1 @@
-$(document).ready(function(){
-    $("#cpf").inputmask("999.999.999-99");
-    $.validate({
-        modules : 'brazil'
-    });
-});
+$(document).ready(function(){$("#cpf").inputmask("999.999.999-99"),$.validate({modules:"brazil"});var e=$("#dependente"),n=$("#desconto");"S"===e.val()?n.show():n.hide(),$(e).on("change",function(){"S"===e.val()?n.show():(n.hide(),$("#sim").prop("checked",!1),$("#nao").prop("checked",!1))})});

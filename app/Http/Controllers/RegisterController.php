@@ -33,7 +33,8 @@ class RegisterController extends Controller
                 'svcolaborador.CPF',
                 'coempresa.RAZAO',
                 'svcolaborador.FOLHA',
-                'svcolaborador.CDFILIAL'
+                'svcolaborador.CDFILIAL',
+                'svcolaborador.DEPENDENTE'
             )
             ->get()->first();
 
@@ -68,6 +69,7 @@ class RegisterController extends Controller
             ->update([
                 'FOLHA' => $request->folha,
                 'CDFILIAL' => $request->unidade,
+                'DEPENDENTE' => $request->dependente
                 ]);
 
         return redirect()->route('register.home');
@@ -142,7 +144,8 @@ class RegisterController extends Controller
                 'svcolaborador.NOME as COLABORADOR',
                 'svcolaborador.CPF',
                 'svcolaborador.FOLHA',
-                'coempresa.RAZAO'
+                'coempresa.RAZAO',
+                'svcolaborador.DEPENDENTE'
             )
             ->first();
 
@@ -151,12 +154,18 @@ class RegisterController extends Controller
             ->select('NOME as nome', 'IDADE as idade')
             ->get()->toArray();
 
+        if (count($dependente)){
+            session()->flash('error', 'Atenção! É obrigatório cadastrar ao menos um dependente');
+            return redirect()->route('register.home');
+        }
+
         $data = [
             'colaborador' => $funcionario->COLABORADOR,
             'cpf' => $funcionario->CPF,
             'casa' => $funcionario->RAZAO,
             'folha' => $funcionario->FOLHA,
             'cidade' => $this->geoIp->getCity(),
+            'dependente' => $funcionario->DEPENDENTE,
             'dependentes' => $dependente
         ];
 
