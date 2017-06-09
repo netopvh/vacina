@@ -25,6 +25,7 @@
 <script type="text/javascript" src="{{ asset('components/inputmask/dist/jquery.inputmask.bundle.js') }}"></script>
 <script type="text/javascript" src="{{ asset('components/jquery-form-validator/form-validator/jquery.form-validator.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('components/jquery-form-validator/form-validator/lang/pt.js') }}"></script>
+<script type="text/javascript" src="{{ asset('components/bootbox.js/bootbox.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

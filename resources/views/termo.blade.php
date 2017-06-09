@@ -26,8 +26,13 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="row">
-                <div class="col-xs-offset-3 col-xs-5">
-                    <h4>Termo de Desconto em Folha</h4>
+                <div class="col-xs-offset-2 col-xs-7">
+                    <h4>Adesão para a Campanha de Vacinação {{ date('Y') }}</h4>
+                </div>
+            </div>
+            <div class="row space-top">
+                <div class="col-xs-12 text-bold text-center">
+                    Pelo presente termo, confirmo adesão á campanha de vacinação SESI 2017
                 </div>
             </div>
             <div class="row space-top">
@@ -44,25 +49,36 @@
                         <span class="text-bold">Casa:</span><br>
                         {{ $casa }}
                     </div>
-                    <div class="form-group">
-                        <span class="text-bold">Descontar em Folha:</span><br>
-                        ({{ $folha == 'S'?'X':' ' }})Sim ({{ $folha == 'N'?'X':'' }}) Não
-                    </div>
-                    <div class="form-group">
-                        <span class="text-bold">Quantidade de Dependentes:</span><br>
-                        {{ count($dependentes) }}
-                    </div>
-                    <div class="form-group">
-                        <span class="text-bold">Nome dos Dependentes</span><br>
-                        @foreach($dependentes as $dependente)
-                            {{ $dependente->nome }}<br>
-                        @endforeach
-                    </div>
+                    @if($filhos == 'S')
+                        <div class="form-group">
+                            <span class="text-bold">Descontar em Folha:</span><br>
+                            ({{ $folha == 'S'?'X':' ' }})Sim ({{ $folha == 'N'?'X':'' }}) Não
+                        </div>
+                    @endif
+                    @if($filhos == 'S')
+                        <div class="form-group">
+                            <span class="text-bold">Quantidade de Dependentes:</span><br>
+                            {{ count($dependentes) }}
+                        </div>
+                    @endif
+                    @if($filhos == 'S')
+                        <div class="form-group">
+                            <span class="text-bold">Nome dos Dependentes</span><br>
+                            @foreach($dependentes as $dependente)
+                                {{ $dependente->nome }}<br>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 text-bold">
-                    Autorizo descontar em folha de pagamento o valor total referente a inclusão de meu(s) dependente(s) na campanha de vacinação antigripal.
+                    @if($filhos == 'S')
+                        Autorizo descontar em folha de pagamento o valor total referente a inclusão de meu(s)
+                        dependente(s)
+                        na campanha de vacinação antigripal.
+                    @endif
+
                 </div>
             </div>
             <div class="row space-top">

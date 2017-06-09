@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class HomeController extends Controller
 {
@@ -26,16 +27,27 @@ class HomeController extends Controller
     public function postUser(Request $request)
     {
 
-        $colaborador = DB::table('svcolaborador')
-            ->where('CPF',$request->cpf)
-            ->get();
 
-        if (count($colaborador) < 1){
+
+        if (!$this->existsUser($request->cpf)){
             $request->session()->flash('error', 'Colaborador não localizado');
             return redirect()->route('index');
         }else{
             session()->put('cpf',$request->cpf);
             return redirect()->route('register.home');
+        }
+    }
+
+    public function existsUser($cpf)
+    {
+        $colaborador = DB::table('svcolaborador')
+            ->where('CPF',$cpf)
+            ->get();
+
+        if (count($colaborador) >= 1){
+            return true;
+        }else{
+            return false;
         }
     }
 

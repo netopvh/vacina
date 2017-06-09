@@ -9,11 +9,9 @@
                     <div class="col-xs-4">
                         <a href="{{ route('register.logout') }}" type="submit" class="btn btn-primary">Sair do
                             Sistema</a>
-                        @if($funcionario->DEPENDENTE == 'S')
-                            <a href="{{ route('register.termo',['id' => $funcionario->CODIGO]) }}"
-                               class="btn btn-primary">Imprimir
-                                Termo</a>
-                        @endif
+                        <a href="{{ route('register.termo',['id' => $funcionario->CODIGO]) }}"
+                           class="btn btn-primary">Imprimir
+                            Termo</a>
                     </div>
                 </div>
             </fieldset>
@@ -118,6 +116,8 @@
                         <h3 class="panel-title">Dependentes</h3>
                     </div>
                     <div class="panel-body">
+                        <span class="small text-danger">Atenção! O Valor da dose para os dependentes é de <b>R$90,00</b></span>
+                        <br>
                         <form action="{{ route('register.dependente') }}" method="post" autocomplete="off">
                             {{ csrf_field() }}
                             <input type="hidden" name="codigo" value="{{ $funcionario->CODIGO }}">

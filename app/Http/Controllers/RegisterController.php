@@ -165,7 +165,7 @@ class RegisterController extends Controller
             'casa' => $funcionario->RAZAO,
             'folha' => $funcionario->FOLHA,
             'cidade' => $this->geoIp->getCity(),
-            'dependente' => $funcionario->DEPENDENTE,
+            'filhos' => $funcionario->DEPENDENTE,
             'dependentes' => $dependente
         ];
 

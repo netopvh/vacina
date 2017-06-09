@@ -16,6 +16,7 @@
     "bootstrap": "~3.3.7",
     "inputmask": "~3.3.6",
     "jquery-form-validator": "~2.3.64",
-    "font-awesome": "~4.7.0"
+    "font-awesome": "~4.7.0",
+    "bootbox.js": "bootbox#^4.4.0"
   }
 }

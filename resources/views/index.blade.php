@@ -6,7 +6,7 @@
             <h3>Módulo Vacinação de Colaboradores</h3>
             <hr>
         </div>
-        <form action="{{ route('index.login') }}" method="post" autocomplete="off">
+        <form action="{{ route('index.login') }}" id="aderir" method="post" autocomplete="off">
             {{ csrf_field() }}
             <div class="row">
                 <div class="col-xs-3">
