@@ -73,7 +73,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 text-bold">
-                    @if($filhos == 'S')
+                    @if($filhos == 'S' && $folha == 'S')
                         Autorizo descontar em folha de pagamento o valor total referente a inclusão de meu(s)
                         dependente(s)
                         na campanha de vacinação antigripal.

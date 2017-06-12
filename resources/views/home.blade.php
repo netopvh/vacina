@@ -6,12 +6,15 @@
             <fieldset>
                 <legend>Bem vindo {{ $funcionario->NOME }}</legend>
                 <div class="row">
-                    <div class="col-xs-4">
+                    <div class="col-xs-6">
                         <a href="{{ route('register.logout') }}" type="submit" class="btn btn-primary">Sair do
                             Sistema</a>
                         <a href="{{ route('register.termo',['id' => $funcionario->CODIGO]) }}"
-                           class="btn btn-primary">Imprimir
+                           class="btn btn-primary" id="aderir">Imprimir
                             Termo</a>
+                        @if($funcionario->ADERIR == 'S')
+                            <a href="{{ route('register.cancela',['id' => $funcionario->CODIGO]) }}" class="btn btn-primary">Cancelar Adesão</a>
+                        @endif
                     </div>
                 </div>
             </fieldset>

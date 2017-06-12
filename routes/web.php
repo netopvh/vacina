@@ -8,3 +8,4 @@ Route::get('/logout','RegisterController@logout')->name('register.logout');
 Route::patch('/atualiza/{id}','RegisterController@postAtualiza')->name('register.atualiza');
 Route::delete('/delete/{id}','RegisterController@deleteDependente')->name('register.delete');
 Route::get('/termo/{id}','RegisterController@generatePdf')->name('register.termo');
+Route::get('/cancela/{id}','RegisterController@colabCancela')->name('register.cancela');

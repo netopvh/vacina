@@ -22,9 +22,9 @@ $(document).ready(function(){
             $('#nao').prop('checked', false);
         }
     });
-    $('#aderir').submit(function(e) {
-        var currentForm = this;
+    $('#aderir').click(function(e) {
         e.preventDefault();
+        var href = $(this).attr('href');
         bootbox.confirm({
             message: "Colaborador, deseja realmente aderir á campanha de vacinação?",
             buttons: {
@@ -39,7 +39,7 @@ $(document).ready(function(){
             },
             callback: function (result) {
                 if (result) {
-                    currentForm.submit();
+                    window.location = href;
                 }
             }
         });

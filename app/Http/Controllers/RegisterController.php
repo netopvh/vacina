@@ -35,7 +35,8 @@ class RegisterController extends Controller
                 'coempresa.RAZAO',
                 'svcolaborador.FOLHA',
                 'svcolaborador.CDFILIAL',
-                'svcolaborador.DEPENDENTE'
+                'svcolaborador.DEPENDENTE',
+                'svcolaborador.ADERIR'
             )
             ->get()->first();
 
@@ -103,7 +104,7 @@ class RegisterController extends Controller
                 return redirect()->route('register.home');
             }else{
                 DB::table('svdependente')->insert([
-                    'NOME' => $request->nome,
+                    'NOME' => strtoupper($request->nome),
                     'IDADE' => $request->idade,
                     'COLABORADOR' => $request->codigo
                 ]);
@@ -171,6 +172,8 @@ class RegisterController extends Controller
             'dependentes' => $dependente
         ];
 
+        $this->colabAderir(session('cpf'));
+
         $pdf = Pdf::loadView('termo',$data);
         return $pdf->stream('termo.pdf');
     }
@@ -217,5 +220,26 @@ class RegisterController extends Controller
             session()->forget($sessao);
             session()->put($sessao, $value);
         }
+    }
+
+    /**
+     * @param $cpf
+     */
+    public function colabAderir($cpf)
+    {
+        DB::table('svcolaborador')->where('cpf', $cpf)->update(['ADERIR' => 'S']);
+    }
+
+    public function colabCancela($id)
+    {
+        DB::table('svcolaborador')->where('CODIGO',$id)->update(['ADERIR' => 'N']);
+        DB::table('svdependente')->where('COLABORADOR',$id)->delete();
+
+        session()->forget('cpf');
+        session()->flush();
+        session()->forget('unidade');
+        session()->flush();
+
+        return redirect()->route('index');
     }
 }
