@@ -24,6 +24,7 @@ class RegisterController extends Controller
     public function index(Request $request)
     {
         $cpf = trim($request->session()->get('cpf'));
+
         $funcionario = DB::table('svcolaborador')
             ->join('coempresa', 'svcolaborador.CDCASA', '=', 'coempresa.CODIGO')
             ->where('svcolaborador.CPF', $cpf)
@@ -129,6 +130,7 @@ class RegisterController extends Controller
      */
     public function generatePdf($id)
     {
+        $this->geoIp->setIp(file_get_contents('http://bot.whatismyipaddress.com/'));
 
         if (!$this->getColabAtualizado(session('cpf'))){
             session()->flash('error', 'Atenção! É obrigatório atualizar informações do colaborador!');
@@ -160,11 +162,11 @@ class RegisterController extends Controller
         }
 
         $data = [
+            'cidade' => $this->geoIp->getCity(),
             'colaborador' => $funcionario->COLABORADOR,
             'cpf' => $funcionario->CPF,
             'casa' => $funcionario->RAZAO,
             'folha' => $funcionario->FOLHA,
-            'cidade' => $this->geoIp->getCity(),
             'filhos' => $funcionario->DEPENDENTE,
             'dependentes' => $dependente
         ];
@@ -187,6 +189,10 @@ class RegisterController extends Controller
         return redirect()->route('index');
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     public function getColabAtualizado($id)
     {
         $colab = DB::table('svcolaborador')
@@ -199,6 +205,10 @@ class RegisterController extends Controller
         }
     }
 
+    /**
+     * @param $sessao
+     * @param $value
+     */
     public function sessionUnidade($sessao, $value)
     {
         if (!session($sessao)){
